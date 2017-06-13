@@ -56,11 +56,15 @@ def proc_files(files):
     """Read file list"""
     lines = []
     for fname in files:
-        print 'Processing ', fname
-        with codecs.open(fname, 'r', encoding='utf-8', errors='replace')  as fobj:
-            lines = proc_file(fobj.readlines())
-            with codecs.open(fname, 'wb', encoding='utf-8', errors='replace') as fobj:
-                fobj.write(os.sep.join(lines))
+        print 'Processing ', fname,
+        try:
+            with codecs.open(fname, 'r', encoding='utf-8', errors='replace')  as fobj:
+                lines = proc_file(fobj.readlines())
+                with codecs.open(fname, 'wb', encoding='utf-8', errors='replace') as fobj:
+                    fobj.write(os.sep.join(lines))
+        except IOError as e:
+            print e,
+        print
     if not files:
         print >>sys.stderr, "Input files list empty?"
     return lines
